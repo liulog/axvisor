@@ -22,7 +22,7 @@ entry_point = 0x4020_0000
 # Load from file system.
 image_location = "memory"
 # The file path of the kernel image.
-kernel_path = "/home/debin/code/axvisor/vmm0626/arceos/examples/shell/shell_aarch64-qemu-virt_0x40020.bin"
+kernel_path = "/home/debin/Codes/arceos-umhv/axvirtio/virtio0627/shell_aarch64-qemu-virt_0x400.bin"
 # The load address of the kernel image.
 kernel_load_addr = 0x4020_0000
 ## Load from memory
@@ -34,7 +34,7 @@ kernel_load_addr = 0x4020_0000
 # Memory regions with format (`base_paddr`, `size`, `flags`, `map_type`).
 # For `map_type`, 0 means `MAP_ALLOC`, 1 means `MAP_IDENTICAL`.
 memory_regions = [
-    [0x4000_0000, 0x100_0000, 0x7, 0], # Low RAM		    16M 0b00111 R|W|EXECUTE
+    [0x4000_0000, 0x800_0000, 0x7, 0], # Low RAM		    16M 0b00111 R|W|EXECUTE
 ]
 
 #
