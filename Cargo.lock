@@ -1848,10 +1848,13 @@ dependencies = [
 [[package]]
 name = "x86_vcpu"
 version = "0.1.0"
+source = "git+https://github.com/arceos-hypervisor/x86_vcpu.git#0d73ec10b04e187c6aabd110123a6bf96e2f2ae0"
 dependencies = [
  "axaddrspace",
+ "axdevice_base",
  "axerrno",
  "axvcpu",
+ "axvisor_api",
  "bit_field",
  "bitflags 2.9.0",
  "cfg-if",
@@ -1860,9 +1863,27 @@ dependencies = [
  "memory_addr",
  "numeric-enum-macro",
  "page_table_entry",
+ "paste",
  "raw-cpuid 11.5.0",
  "x86",
  "x86_64 0.15.2",
+ "x86_vlapic",
+]
+
+[[package]]
+name = "x86_vlapic"
+version = "0.1.0"
+source = "git+https://github.com/arceos-hypervisor/x86_vlapic.git#7fdd40cd67711cdf8cfa1673f1d62d326d66b1d0"
+dependencies = [
+ "axaddrspace",
+ "axdevice_base",
+ "axerrno",
+ "axvisor_api",
+ "bit",
+ "log",
+ "memory_addr",
+ "paste",
+ "tock-registers 0.9.0",
 ]
 
 [[package]]

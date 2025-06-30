@@ -14,8 +14,6 @@ path = "../crates/axvm"
 path = "../crates/axaddrspace"
 [patch."https://github.com/arceos-hypervisor/axvcpu.git".axvcpu]
 path = "../crates/axvcpu"
-[patch."https://github.com/arceos-hypervisor/x86_vcpu.git".x86_vcpu]
-path = "../crates/x86_vcpu"
 [patch."https://github.com/arceos-hypervisor/arm_vcpu.git".arm_vcpu]
 path = "../crates/arm_vcpu"
 [patch."https://github.com/arceos-hypervisor/axvirtio.git".axvirtio-blk]
