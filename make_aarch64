@@ -1,4 +1,26 @@
 #!/usr/bin/fish
-cd ../arceos
+
+# 获取参数，默认为 0
+set param 0
+if test (count $argv) -gt 0
+    set param $argv[1]
+end
+
+cd ../arceos_guest
+
+# 根据参数选择配置文件
+set source_config "configs/platforms/aarch64-qemu-virt_$param.toml"
+set target_config "configs/platforms/aarch64-qemu-virt.toml"
+
+# 检查源配置文件是否存在
+if not test -f $source_config
+    echo "错误: 配置文件 $source_config 不存在"
+    exit 1
+end
+
+# 复制配置文件
+echo "使用配置文件: $source_config"
+cp $source_config $target_config
+
 make defconfig ARCH=aarch64
-make ARCH=aarch64 SMP=1 A=examples/shell BUS=mmio
+make ARCH=aarch64 SMP=1 A=examples/shell FEATURES=virtio_console BUS=mmio
