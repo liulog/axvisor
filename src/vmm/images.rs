@@ -3,6 +3,10 @@ use axerrno::AxResult;
 
 use axvm::config::AxVMCrateConfig;
 
+use alloc::vec::Vec;
+use memory_addr::PhysAddr;
+use crate::vmm::fdt::updated_fdt;
+
 use crate::hal::CacheOp;
 use crate::vmm::VMRef;
 use crate::vmm::config::config;
@@ -10,9 +14,9 @@ use crate::vmm::config::config;
 /// Loads the VM image files.
 pub fn load_vm_images(config: AxVMCrateConfig, vm: VMRef) -> AxResult {
     match config.kernel.image_location.as_deref() {
-        Some("memory") => load_vm_images_from_memory(config, vm),
+        Some("memory") => load_vm_images_from_memory(config, vm.clone()),
         #[cfg(feature = "fs")]
-        Some("fs") => fs::load_vm_images_from_filesystem(config, vm),
+        Some("fs") => fs::load_vm_images_from_filesystem(config, vm.clone()),
         _ => unimplemented!(
             "Check your \"image_location\" in config.toml, \"memory\" and \"fs\" are supported,\n NOTE: \"fs\" feature should be enabled if you want to load images from filesystem. (APP_FEATURES=fs)"
         ),
@@ -34,8 +38,12 @@ fn load_vm_images_from_memory(config: AxVMCrateConfig, vm: VMRef) -> AxResult {
 
     // Load DTB image
     if let Some(buffer) = vm_imags.dtb {
-        load_vm_image_from_memory(buffer, config.kernel.dtb_load_addr.unwrap(), vm.clone())
-            .expect("Failed to load DTB images");
+
+        let mut dtb_buffer = Vec::with_capacity(buffer.len());
+        dtb_buffer.extend_from_slice(&buffer); 
+        let dtb_buffer_addr = dtb_buffer.as_ptr() as usize;
+        debug!("dtb_buffer_addr: 0x{:x}, size:{}", dtb_buffer_addr, dtb_buffer.len());
+        updated_fdt(config.clone(), dtb_buffer_addr, buffer.len(), vm.clone());
     }
 
     // Load BIOS image
@@ -53,13 +61,13 @@ fn load_vm_images_from_memory(config: AxVMCrateConfig, vm: VMRef) -> AxResult {
     Ok(())
 }
 
-fn load_vm_image_from_memory(image_buffer: &[u8], load_addr: usize, vm: VMRef) -> AxResult {
+pub fn load_vm_image_from_memory(image_buffer: &[u8], load_addr: usize, vm: VMRef) -> AxResult {
     let mut buffer_pos = 0;
     let image_load_gpa = GuestPhysAddr::from(load_addr);
 
     let image_size = image_buffer.len();
 
-    debug!(
+    info!(
         "loading VM image from memory {:?} {}",
         image_load_gpa,
         image_buffer.len()
@@ -111,10 +119,12 @@ mod fs {
 
     use super::*;
 
+    use std::io::{BufReader, Read};
     /// Loads the VM image files from the filesystem
     /// into the guest VM's memory space based on the VM configuration.
     pub(crate) fn load_vm_images_from_filesystem(config: AxVMCrateConfig, vm: VMRef) -> AxResult {
         info!("Loading VM images from filesystem");
+        let vm_config = config.clone();
         // Load kernel image.
         load_vm_image(
             config.kernel.kernel_path,
@@ -144,11 +154,24 @@ mod fs {
         // Load DTB image if needed.
         // Todo: generate DTB file for guest VM.
         if let Some(dtb_path) = config.kernel.dtb_path {
-            if let Some(dtb_load_addr) = config.kernel.dtb_load_addr {
-                load_vm_image(dtb_path, GuestPhysAddr::from(dtb_load_addr), vm.clone())?;
-            } else {
-                return ax_err!(NotFound, "DTB load addr is missed");
-            }
+
+
+            let (dtb_file, dtb_size) = open_image_file(dtb_path.as_str())?;
+            info!("DTB file size {}", dtb_size);
+
+            let mut file = BufReader::new(dtb_file);
+            let mut dtb_buffer = vec![0; dtb_size];
+
+            file.read_exact(&mut dtb_buffer).map_err(|err| {
+                ax_err_type!(
+                    Io,
+                    format!("Failed in reading from file {}, err {:?}", dtb_path, err)
+                )
+            })?;
+
+            let dtb_buffer_addr = dtb_buffer.as_ptr() as usize;
+            info!("DTB buffer addr: 0x{:x}, size: {}", dtb_buffer_addr, dtb_size);
+            updated_fdt(vm_config, dtb_buffer_addr, dtb_size, vm.clone());
         };
         Ok(())
     }

@@ -42,35 +42,35 @@ pub fn parse_vm_dtb(vm_cfg: &mut AxVMConfig, dtb: &[u8]) {
     let fdt = Fdt::from_bytes(dtb)
         .expect("Failed to parse DTB image, perhaps the DTB is invalid or corrupted");
 
-    let mut dram_regions = Vec::new();
-    for mem in fdt.memory() {
-        for region in mem.regions() {
-            if region.size == 0 {
-                continue;
-            }
-            dram_regions.push((region.address as usize, region.size));
-        }
-    }
+    // let mut dram_regions = Vec::new();
+    // for mem in fdt.memory() {
+    //     for region in mem.regions() {
+    //         if region.size == 0 {
+    //             continue;
+    //         }
+    //         dram_regions.push((region.address as usize, region.size));
+    //     }
+    // }
 
-    for mem in fdt.memory() {
-        for region in mem.regions() {
-            // Skip empty regions
-            if region.size == 0 {
-                continue;
-            }
-            warn!("DTB memory region: {:?}", region);
-            vm_cfg.add_memory_region(VmMemConfig {
-                gpa: region.address as usize,
-                size: region.size,
-                flags: (MappingFlags::READ
-                    | MappingFlags::WRITE
-                    | MappingFlags::EXECUTE
-                    | MappingFlags::USER)
-                    .bits(),
-                map_type: VmMemMappingType::MapIdentical,
-            });
-        }
-    }
+    // for mem in fdt.memory() {
+    //     for region in mem.regions() {
+    //         // Skip empty regions
+    //         if region.size == 0 {
+    //             continue;
+    //         }
+    //         warn!("DTB memory region: {:?}", region);
+    //         vm_cfg.add_memory_region(VmMemConfig {
+    //             gpa: region.address as usize,
+    //             size: region.size,
+    //             flags: (MappingFlags::READ
+    //                 | MappingFlags::WRITE
+    //                 | MappingFlags::EXECUTE
+    //                 | MappingFlags::USER)
+    //                 .bits(),
+    //             map_type: VmMemMappingType::MapIdentical,
+    //         });
+    //     }
+    // }
 
     for reserved in fdt.reserved_memory() {
         warn!("Find reserved memory: {:?}", reserved.name());
@@ -220,6 +220,7 @@ pub fn init_guest_vms() {
             AxVMCrateConfig::from_toml(raw_cfg_str).expect("Failed to resolve VM config");
         let mut vm_config = AxVMConfig::from(vm_create_config.clone());
 
+        info!("before parsing VM[{}] config: {:?}", vm_config.id(), &vm_config);
         // Overlay VM config with the given DTB.
         if let Some(dtb) = get_vm_dtb(&vm_config) {
             parse_vm_dtb(&mut vm_config, dtb);
@@ -229,7 +230,7 @@ pub fn init_guest_vms() {
                 vm_config.id()
             );
         }
-
+        info!("after parsing VM[{}] config: {:?}", vm_config.id(), &vm_config);
         info!("Creating VM[{}] {:?}", vm_config.id(), vm_config.name());
 
         // Create VM.
