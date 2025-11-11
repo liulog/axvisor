@@ -1,0 +1,12 @@
+[submodule "modules/axvm"]
+	path = modules/axvm
+	url = https://github.com/arceos-hypervisor/axvm
+[submodule "modules/axvcpu"]
+	path = modules/axvcpu
+	url = https://github.com/arceos-hypervisor/axvcpu
+[submodule "modules/arm_vcpu"]
+	path = modules/arm_vcpu
+	url = https://github.com/arceos-hypervisor/arm_vcpu
+[submodule "modules/axdevice"]
+	path = modules/axdevice
+	url = https://github.com/arceos-hypervisor/axdevice
