@@ -233,7 +233,7 @@ dependencies = [
  "axaddrspace",
  "axdevice_base",
  "axerrno",
- "axvcpu",
+ "axvcpu 0.1.2",
  "axvisor_api",
  "log",
  "numeric-enum-macro",
@@ -373,6 +373,27 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.110",
+]
+
+[[package]]
+name = "axcpu"
+version = "0.2.2"
+dependencies = [
+ "aarch64-cpu",
+ "cfg-if",
+ "lazyinit",
+ "linkme",
+ "log",
+ "loongArch64",
+ "memory_addr",
+ "page_table_entry",
+ "page_table_multiarch",
+ "percpu",
+ "riscv",
+ "static_assertions",
+ "tock-registers 0.9.0",
+ "x86",
+ "x86_64",
 ]
 
 [[package]]
@@ -608,12 +629,12 @@ dependencies = [
  "aarch64-cpu",
  "axalloc",
  "axconfig",
- "axcpu",
+ "axcpu 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "axlog",
- "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates.git?tag=vmm-v0.3.0)",
+ "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0)",
  "axplat-aarch64-qemu-virt",
  "axplat-loongarch64-qemu-virt",
- "axplat-riscv64-qemu-virt",
+ "axplat-riscv64-qemu-virt 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0)",
  "axplat-x86-pc",
  "cfg-if",
  "heapless 0.8.0",
@@ -761,15 +782,42 @@ dependencies = [
 [[package]]
 name = "axplat"
 version = "0.2.0"
-source = "git+https://github.com/arceos-hypervisor/axplat_crates.git?tag=vmm-v0.3.0#3345f58f3da5ef2eafcfa1fcf1ac32e5e80e1a7d"
+source = "git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0#3345f58f3da5ef2eafcfa1fcf1ac32e5e80e1a7d"
 dependencies = [
- "axplat-macros 0.1.0 (git+https://github.com/arceos-hypervisor/axplat_crates.git?tag=vmm-v0.3.0)",
+ "axplat-macros 0.1.0 (git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0)",
  "bitflags 2.10.0",
  "const-str",
  "crate_interface",
  "handler_table",
  "kspin",
  "memory_addr",
+]
+
+[[package]]
+name = "axplat-aarch64-dyn"
+version = "0.3.0"
+dependencies = [
+ "aarch64-cpu",
+ "aarch64-cpu-ext",
+ "any-uart",
+ "arm-gic-driver",
+ "axconfig-macros",
+ "axcpu 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0)",
+ "fdt-parser",
+ "heapless 0.8.0",
+ "lazyinit",
+ "log",
+ "memory_addr",
+ "page_table_entry",
+ "paste",
+ "percpu",
+ "rdif-intc",
+ "rdrive",
+ "serde",
+ "somehal",
+ "spin 0.10.0",
+ "toml 0.8.23",
 ]
 
 [[package]]
@@ -782,8 +830,8 @@ dependencies = [
  "any-uart",
  "arm-gic-driver",
  "axconfig-macros",
- "axcpu",
- "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates.git?tag=vmm-v0.3.0)",
+ "axcpu 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0)",
  "fdt-parser",
  "heapless 0.8.0",
  "lazyinit",
@@ -803,14 +851,14 @@ dependencies = [
 [[package]]
 name = "axplat-aarch64-peripherals"
 version = "0.2.0"
-source = "git+https://github.com/arceos-hypervisor/axplat_crates.git?tag=vmm-v0.3.0#3345f58f3da5ef2eafcfa1fcf1ac32e5e80e1a7d"
+source = "git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0#3345f58f3da5ef2eafcfa1fcf1ac32e5e80e1a7d"
 dependencies = [
  "aarch64-cpu",
  "arm-gic-driver",
  "arm_pl011",
  "arm_pl031",
- "axcpu",
- "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates.git?tag=vmm-v0.3.0)",
+ "axcpu 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0)",
  "int_ratio",
  "kspin",
  "lazyinit",
@@ -822,11 +870,11 @@ dependencies = [
 [[package]]
 name = "axplat-aarch64-qemu-virt"
 version = "0.2.0"
-source = "git+https://github.com/arceos-hypervisor/axplat_crates.git?tag=vmm-v0.3.0#3345f58f3da5ef2eafcfa1fcf1ac32e5e80e1a7d"
+source = "git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0#3345f58f3da5ef2eafcfa1fcf1ac32e5e80e1a7d"
 dependencies = [
  "axconfig-macros",
- "axcpu",
- "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates.git?tag=vmm-v0.3.0)",
+ "axcpu 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0)",
  "axplat-aarch64-peripherals",
  "log",
  "page_table_entry",
@@ -835,11 +883,11 @@ dependencies = [
 [[package]]
 name = "axplat-loongarch64-qemu-virt"
 version = "0.2.0"
-source = "git+https://github.com/arceos-hypervisor/axplat_crates.git?tag=vmm-v0.3.0#3345f58f3da5ef2eafcfa1fcf1ac32e5e80e1a7d"
+source = "git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0#3345f58f3da5ef2eafcfa1fcf1ac32e5e80e1a7d"
 dependencies = [
  "axconfig-macros",
- "axcpu",
- "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates.git?tag=vmm-v0.3.0)",
+ "axcpu 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0)",
  "kspin",
  "lazyinit",
  "log",
@@ -862,7 +910,7 @@ dependencies = [
 [[package]]
 name = "axplat-macros"
 version = "0.1.0"
-source = "git+https://github.com/arceos-hypervisor/axplat_crates.git?tag=vmm-v0.3.0#3345f58f3da5ef2eafcfa1fcf1ac32e5e80e1a7d"
+source = "git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0#3345f58f3da5ef2eafcfa1fcf1ac32e5e80e1a7d"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -872,11 +920,24 @@ dependencies = [
 [[package]]
 name = "axplat-riscv64-qemu-virt"
 version = "0.2.0"
-source = "git+https://github.com/arceos-hypervisor/axplat_crates.git?tag=vmm-v0.3.0#3345f58f3da5ef2eafcfa1fcf1ac32e5e80e1a7d"
 dependencies = [
  "axconfig-macros",
- "axcpu",
- "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates.git?tag=vmm-v0.3.0)",
+ "axcpu 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0)",
+ "log",
+ "riscv",
+ "riscv_goldfish",
+ "sbi-rt",
+]
+
+[[package]]
+name = "axplat-riscv64-qemu-virt"
+version = "0.2.0"
+source = "git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0#3345f58f3da5ef2eafcfa1fcf1ac32e5e80e1a7d"
+dependencies = [
+ "axconfig-macros",
+ "axcpu 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0)",
  "log",
  "riscv",
  "sbi-rt",
@@ -885,11 +946,11 @@ dependencies = [
 [[package]]
 name = "axplat-x86-pc"
 version = "0.2.0"
-source = "git+https://github.com/arceos-hypervisor/axplat_crates.git?tag=vmm-v0.3.0#3345f58f3da5ef2eafcfa1fcf1ac32e5e80e1a7d"
+source = "git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0#3345f58f3da5ef2eafcfa1fcf1ac32e5e80e1a7d"
 dependencies = [
  "axconfig-macros",
- "axcpu",
- "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates.git?tag=vmm-v0.3.0)",
+ "axcpu 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0)",
  "bitflags 2.10.0",
  "heapless 0.9.2",
  "int_ratio",
@@ -910,8 +971,8 @@ name = "axplat-x86-qemu-q35"
 version = "0.1.0"
 dependencies = [
  "axconfig-macros",
- "axcpu",
- "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates.git?tag=vmm-v0.3.0)",
+ "axcpu 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0)",
  "bitflags 2.10.0",
  "heapless 0.9.2",
  "int_ratio",
@@ -943,8 +1004,8 @@ dependencies = [
  "axlog",
  "axmm",
  "axnet",
- "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates.git?tag=vmm-v0.3.0)",
- "axplat-aarch64-dyn",
+ "axplat 0.2.0 (git+https://github.com/arceos-hypervisor/axplat_crates?tag=vmm-v0.3.0)",
+ "axplat-aarch64-dyn 0.3.0 (git+https://github.com/arceos-hypervisor/axplat-aarch64-dyn?tag=v0.3.3)",
  "axplat-x86-qemu-q35",
  "axtask",
  "cfg-if",
@@ -1062,6 +1123,17 @@ dependencies = [
 
 [[package]]
 name = "axvcpu"
+version = "0.1.1"
+dependencies = [
+ "axaddrspace",
+ "axerrno",
+ "axvisor_api",
+ "memory_addr",
+ "percpu",
+]
+
+[[package]]
+name = "axvcpu"
 version = "0.1.2"
 source = "git+https://github.com/arceos-hypervisor/axvcpu.git?branch=next#343ec3ccf99a86fb9c67a7b0372e9b7a745f0640"
 dependencies = [
@@ -1087,9 +1159,9 @@ dependencies = [
  "axhvc",
  "axruntime",
  "axstd",
- "axvcpu",
+ "axvcpu 0.1.2",
  "axvisor_api",
- "axvm",
+ "axvm 0.1.0 (git+https://github.com/arceos-hypervisor/axvm.git?branch=next)",
  "bitflags 2.10.0",
  "byte-unit",
  "cfg-if",
@@ -1144,7 +1216,6 @@ dependencies = [
 [[package]]
 name = "axvm"
 version = "0.1.0"
-source = "git+https://github.com/arceos-hypervisor/axvm.git?branch=next#0393f27dea948433e53285a400e356cdfd4c4fa3"
 dependencies = [
  "arm_vcpu",
  "arm_vgic 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1152,7 +1223,7 @@ dependencies = [
  "axdevice",
  "axdevice_base",
  "axerrno",
- "axvcpu",
+ "axvcpu 0.1.2",
  "axvmconfig",
  "cfg-if",
  "cpumask",
@@ -1161,7 +1232,32 @@ dependencies = [
  "page_table_entry",
  "page_table_multiarch",
  "percpu",
- "riscv_vcpu",
+ "riscv_vcpu 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "spin 0.9.8",
+ "x86_vcpu",
+]
+
+[[package]]
+name = "axvm"
+version = "0.1.0"
+source = "git+https://github.com/arceos-hypervisor/axvm.git?branch=next#0393f27dea948433e53285a400e356cdfd4c4fa3"
+dependencies = [
+ "arm_vcpu",
+ "arm_vgic 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "axaddrspace",
+ "axdevice",
+ "axdevice_base",
+ "axerrno",
+ "axvcpu 0.1.2",
+ "axvmconfig",
+ "cfg-if",
+ "cpumask",
+ "log",
+ "memory_addr",
+ "page_table_entry",
+ "page_table_multiarch",
+ "percpu",
+ "riscv_vcpu 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "spin 0.9.8",
  "x86_vcpu",
 ]
@@ -4515,6 +4611,37 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8188909339ccc0c68cfb5a04648313f09621e8b87dc03095454f1a11f6c5d436"
 
 [[package]]
+name = "riscv_goldfish"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "07aac72f95e774476db82916d79f2d303191310393830573c1ab5c821b21660a"
+
+[[package]]
+name = "riscv_vcpu"
+version = "0.1.2"
+dependencies = [
+ "axaddrspace",
+ "axerrno",
+ "axvcpu 0.1.2",
+ "axvisor_api",
+ "bit_field",
+ "bitflags 2.10.0",
+ "cfg-if",
+ "crate_interface",
+ "log",
+ "memoffset",
+ "memory_addr",
+ "page_table_entry",
+ "riscv",
+ "riscv-decode",
+ "riscv-h",
+ "rustsbi",
+ "sbi-rt",
+ "sbi-spec",
+ "tock-registers 0.9.0",
+]
+
+[[package]]
 name = "riscv_vcpu"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4522,7 +4649,7 @@ checksum = "13f38f28fe6c02bb3ced43087c9667b23d18adf729becdc5adf1253f7df83904"
 dependencies = [
  "axaddrspace",
  "axerrno",
- "axvcpu",
+ "axvcpu 0.1.2",
  "axvisor_api",
  "bit_field",
  "bitflags 2.10.0",
@@ -6536,7 +6663,7 @@ dependencies = [
  "axaddrspace",
  "axdevice_base",
  "axerrno",
- "axvcpu",
+ "axvcpu 0.1.2",
  "axvisor_api",
  "bit_field",
  "bitflags 2.10.0",
